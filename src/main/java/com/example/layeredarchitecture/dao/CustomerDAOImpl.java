@@ -3,10 +3,7 @@ package com.example.layeredarchitecture.dao;
 import com.example.layeredarchitecture.db.DBConnection;
 import com.example.layeredarchitecture.model.CustomerDTO;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class CustomerDAOImpl {
@@ -27,5 +24,17 @@ public class CustomerDAOImpl {
             getAllCustomers.add(customerDTO);
         }
         return getAllCustomers;
+    }
+
+    public boolean customerSaveOnAction(CustomerDTO customerDTO) throws SQLException, ClassNotFoundException {
+
+        Connection connection = DBConnection.getDbConnection().getConnection();
+        PreparedStatement pstm = connection.prepareStatement("INSERT INTO Customer (id,name, address) VALUES (?,?,?)");
+        pstm.setString(1, customerDTO.getId());
+        pstm.setString(2, customerDTO.getName());
+        pstm.setString(3, customerDTO.getAddress());
+
+        boolean isSaved = pstm.executeUpdate() > 0;
+        return isSaved;
     }
 }
