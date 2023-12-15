@@ -223,16 +223,23 @@ public class ManageCustomersFormController {
 
 
     public void btnDelete_OnAction(ActionEvent actionEvent) {
+
         /*Delete Customer*/
+
         String id = tblCustomers.getSelectionModel().getSelectedItem().getId();
         try {
             if (!existCustomer(id)) {
                 new Alert(Alert.AlertType.ERROR, "There is no such customer associated with the id " + id).show();
             }
-            Connection connection = DBConnection.getDbConnection().getConnection();
+
+            CustomerDAOImpl customerDAO = new CustomerDAOImpl();
+
+            customerDAO.customerDeleteOnAction(id);
+
+            /*Connection connection = DBConnection.getDbConnection().getConnection();
             PreparedStatement pstm = connection.prepareStatement("DELETE FROM Customer WHERE id=?");
             pstm.setString(1, id);
-            pstm.executeUpdate();
+            pstm.executeUpdate();*/
 
             tblCustomers.getItems().remove(tblCustomers.getSelectionModel().getSelectedItem());
             tblCustomers.getSelectionModel().clearSelection();
