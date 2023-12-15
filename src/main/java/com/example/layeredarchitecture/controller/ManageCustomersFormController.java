@@ -131,7 +131,6 @@ public class ManageCustomersFormController {
         tblCustomers.getSelectionModel().clearSelection();
     }
 
-
     public void btnSave_OnAction(ActionEvent actionEvent) {
         String id = txtCustomerId.getText();
         String name = txtCustomerName.getText();
@@ -148,9 +147,8 @@ public class ManageCustomersFormController {
         }
 
         if (btnSave.getText().equalsIgnoreCase("save")) {
+
             /*Save Customer*/
-
-
 
             try {
                 if (existCustomer(id)) {
@@ -181,17 +179,26 @@ public class ManageCustomersFormController {
 
 
         } else {
+
             /*Update customer*/
+
             try {
                 if (!existCustomer(id)) {
                     new Alert(Alert.AlertType.ERROR, "There is no such customer associated with the id " + id).show();
                 }
-                Connection connection = DBConnection.getDbConnection().getConnection();
+
+                CustomerDTO customerDTO = new CustomerDTO(id, name, address);
+                CustomerDAOImpl customerDAO = new CustomerDAOImpl();
+
+                customerDAO.customerUpdateOnAction(customerDTO);
+
+                /*Connection connection = DBConnection.getDbConnection().getConnection();
                 PreparedStatement pstm = connection.prepareStatement("UPDATE Customer SET name=?, address=? WHERE id=?");
                 pstm.setString(1, name);
                 pstm.setString(2, address);
                 pstm.setString(3, id);
-                pstm.executeUpdate();
+                pstm.executeUpdate();*/
+
             } catch (SQLException e) {
                 new Alert(Alert.AlertType.ERROR, "Failed to update the customer " + id + e.getMessage()).show();
             } catch (ClassNotFoundException e) {
@@ -203,7 +210,6 @@ public class ManageCustomersFormController {
             selectedCustomer.setAddress(address);
             tblCustomers.refresh();
         }
-
         btnAddNewCustomer.fire();
     }
 
@@ -264,7 +270,6 @@ public class ManageCustomersFormController {
             int newCustomerId = Integer.parseInt(id.replace("C", "")) + 1;
             return String.format("C00-%03d", newCustomerId);
         }
-
     }
 
     private String getLastCustomerId() {
@@ -272,5 +277,4 @@ public class ManageCustomersFormController {
         Collections.sort(tempCustomersList);
         return tempCustomersList.get(tempCustomersList.size() - 1).getId();
     }
-
 }
