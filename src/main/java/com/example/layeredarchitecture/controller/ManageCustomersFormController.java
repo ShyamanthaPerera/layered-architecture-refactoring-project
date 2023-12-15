@@ -215,10 +215,16 @@ public class ManageCustomersFormController {
 
 
     boolean existCustomer(String id) throws SQLException, ClassNotFoundException {
-        Connection connection = DBConnection.getDbConnection().getConnection();
+
+        CustomerDAOImpl customerDAO = new CustomerDAOImpl();
+        boolean isExist = customerDAO.existCustomer(id);
+
+        return isExist;
+
+        /*Connection connection = DBConnection.getDbConnection().getConnection();
         PreparedStatement pstm = connection.prepareStatement("SELECT id FROM Customer WHERE id=?");
         pstm.setString(1, id);
-        return pstm.executeQuery().next();
+        return pstm.executeQuery().next();*/
     }
 
 
@@ -268,7 +274,6 @@ public class ManageCustomersFormController {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-
 
         if (tblCustomers.getItems().isEmpty()) {
             return "C00-001";
