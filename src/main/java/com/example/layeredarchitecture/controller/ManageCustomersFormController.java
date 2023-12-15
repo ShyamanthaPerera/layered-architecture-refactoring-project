@@ -1,5 +1,6 @@
 package com.example.layeredarchitecture.controller;
 
+import com.example.layeredarchitecture.dao.CustomerDAO;
 import com.example.layeredarchitecture.dao.CustomerDAOImpl;
 import com.example.layeredarchitecture.db.DBConnection;
 import com.example.layeredarchitecture.model.CustomerDTO;
@@ -67,7 +68,7 @@ public class ManageCustomersFormController {
         tblCustomers.getItems().clear();
         /*Get all customers*/
         try {
-            CustomerDAOImpl customerDAO = new CustomerDAOImpl();
+            CustomerDAO customerDAO = new CustomerDAOImpl();
             ArrayList<CustomerDTO> getAllCustomers = customerDAO.getAllCustomer();
             for (CustomerDTO customerDTO: getAllCustomers) {
                 tblCustomers.getItems().add(new CustomerTM(
@@ -154,7 +155,7 @@ public class ManageCustomersFormController {
                 }
 
                 CustomerDTO customerDTO = new CustomerDTO(id, name, address);
-                CustomerDAOImpl customerDAO = new CustomerDAOImpl();
+                CustomerDAO customerDAO = new CustomerDAOImpl();
 
                 boolean isSaved = customerDAO.customerSaveOnAction(customerDTO);
 
@@ -186,7 +187,7 @@ public class ManageCustomersFormController {
                 }
 
                 CustomerDTO customerDTO = new CustomerDTO(id, name, address);
-                CustomerDAOImpl customerDAO = new CustomerDAOImpl();
+                CustomerDAO customerDAO = new CustomerDAOImpl();
 
                 customerDAO.customerUpdateOnAction(customerDTO);
 
@@ -214,7 +215,7 @@ public class ManageCustomersFormController {
 
     boolean existCustomer(String id) throws SQLException, ClassNotFoundException {
 
-        CustomerDAOImpl customerDAO = new CustomerDAOImpl();
+        CustomerDAO customerDAO = new CustomerDAOImpl();
         boolean isExist = customerDAO.existCustomer(id);
 
         return isExist;
@@ -236,7 +237,7 @@ public class ManageCustomersFormController {
                 new Alert(Alert.AlertType.ERROR, "There is no such customer associated with the id " + id).show();
             }
 
-            CustomerDAOImpl customerDAO = new CustomerDAOImpl();
+            CustomerDAO customerDAO = new CustomerDAOImpl();
 
             customerDAO.customerDeleteOnAction(id);
 
@@ -259,7 +260,7 @@ public class ManageCustomersFormController {
     private String generateNewId() {
         try {
 
-            CustomerDAOImpl customerDAO = new CustomerDAOImpl();
+            CustomerDAO customerDAO = new CustomerDAOImpl();
 
            return customerDAO.generateNewId();
 

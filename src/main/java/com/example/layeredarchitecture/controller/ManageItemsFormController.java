@@ -1,6 +1,7 @@
 package com.example.layeredarchitecture.controller;
 
 import com.example.layeredarchitecture.dao.CustomerDAOImpl;
+import com.example.layeredarchitecture.dao.ItemsDAO;
 import com.example.layeredarchitecture.dao.ItemsDAOImpl;
 import com.example.layeredarchitecture.db.DBConnection;
 import com.example.layeredarchitecture.model.CustomerDTO;
@@ -73,7 +74,7 @@ public class ManageItemsFormController {
     private void loadAllItems() {
         tblItems.getItems().clear();
         try {
-            ItemsDAOImpl itemsDAO = new ItemsDAOImpl();
+            ItemsDAO itemsDAO = new ItemsDAOImpl();
             ArrayList<ItemDTO> getAllItems = itemsDAO.getAllItems();
 
             for (ItemDTO itemDTO: getAllItems) {
@@ -141,7 +142,7 @@ public class ManageItemsFormController {
                 new Alert(Alert.AlertType.ERROR, "There is no such item associated with the id " + code).show();
             }
 
-            ItemsDAOImpl itemsDAO = new ItemsDAOImpl();
+            ItemsDAO itemsDAO = new ItemsDAOImpl();
 
             itemsDAO.itemDeleteOnAction(code);
 
@@ -190,7 +191,7 @@ public class ManageItemsFormController {
                 //Save Item
 
                 ItemDTO itemDTO = new ItemDTO();
-                ItemsDAOImpl itemsDAO = new ItemsDAOImpl();
+                ItemsDAO itemsDAO = new ItemsDAOImpl();
 
                 boolean isSaved = itemsDAO.itemSaveOnAction(itemDTO);
 
@@ -220,7 +221,7 @@ public class ManageItemsFormController {
                 /*Update Item*/
 
                 ItemDTO itemDTO = new ItemDTO();
-                ItemsDAOImpl itemsDAO = new ItemsDAOImpl();
+                ItemsDAO itemsDAO = new ItemsDAOImpl();
 
                 itemsDAO.itemUpdateOnAction(itemDTO);
 
@@ -248,7 +249,7 @@ public class ManageItemsFormController {
 
     private boolean existItem(String code) throws SQLException, ClassNotFoundException {
 
-        ItemsDAOImpl itemsDAO = new ItemsDAOImpl();
+        ItemsDAO itemsDAO = new ItemsDAOImpl();
         return itemsDAO.existItem(code);
 
         /*Connection connection = DBConnection.getDbConnection().getConnection();
@@ -260,7 +261,7 @@ public class ManageItemsFormController {
     private String generateNewId() {
         try {
 
-            ItemsDAOImpl itemsDAO = new ItemsDAOImpl();
+            ItemsDAO itemsDAO = new ItemsDAOImpl();
             return itemsDAO.generateNewId();
 
             /*Connection connection = DBConnection.getDbConnection().getConnection();
@@ -271,6 +272,7 @@ public class ManageItemsFormController {
                 return String.format("I00-%03d", newItemId);
             } else {
                 return "I00-001";*/
+
             } catch (SQLException ex) {
             throw new RuntimeException(ex);
         } catch (ClassNotFoundException ex) {

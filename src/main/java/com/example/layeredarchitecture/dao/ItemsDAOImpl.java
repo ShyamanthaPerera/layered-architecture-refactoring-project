@@ -6,8 +6,9 @@ import com.example.layeredarchitecture.model.ItemDTO;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class ItemsDAOImpl {
+public class ItemsDAOImpl implements ItemsDAO{
 
+    @Override
     public ArrayList<ItemDTO> getAllItems() throws SQLException, ClassNotFoundException {
 
         Connection connection = DBConnection.getDbConnection().getConnection();
@@ -28,6 +29,7 @@ public class ItemsDAOImpl {
         return getAllItems;
     }
 
+    @Override
     public boolean itemSaveOnAction(ItemDTO itemDTO) throws SQLException, ClassNotFoundException {
 
         Connection connection = DBConnection.getDbConnection().getConnection();
@@ -40,6 +42,7 @@ public class ItemsDAOImpl {
         return pstm.executeUpdate() > 0;
     }
 
+    @Override
     public boolean itemUpdateOnAction(ItemDTO itemDTO) throws SQLException, ClassNotFoundException {
 
         Connection connection = DBConnection.getDbConnection().getConnection();
@@ -52,6 +55,7 @@ public class ItemsDAOImpl {
         return pstm.executeUpdate() > 0;
     }
 
+    @Override
     public boolean itemDeleteOnAction(String code) throws SQLException, ClassNotFoundException {
 
         Connection connection = DBConnection.getDbConnection().getConnection();
@@ -61,6 +65,7 @@ public class ItemsDAOImpl {
         return pstm.executeUpdate() > 0;
     }
 
+    @Override
     public boolean existItem(String code) throws SQLException, ClassNotFoundException {
 
         Connection connection = DBConnection.getDbConnection().getConnection();
@@ -69,7 +74,9 @@ public class ItemsDAOImpl {
         return pstm.executeQuery().next();
     }
 
+    @Override
     public String generateNewId() throws SQLException, ClassNotFoundException {
+
         Connection connection = DBConnection.getDbConnection().getConnection();
         ResultSet rst = connection.createStatement().executeQuery("SELECT code FROM Item ORDER BY code DESC LIMIT 1;");
         if (rst.next()) {
