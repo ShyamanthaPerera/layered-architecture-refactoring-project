@@ -1,9 +1,6 @@
 package com.example.layeredarchitecture.controller;
 
-import com.example.layeredarchitecture.dao.CustomerDAO;
-import com.example.layeredarchitecture.dao.CustomerDAOImpl;
-import com.example.layeredarchitecture.dao.ItemsDAO;
-import com.example.layeredarchitecture.dao.ItemsDAOImpl;
+import com.example.layeredarchitecture.dao.*;
 import com.example.layeredarchitecture.db.DBConnection;
 import com.example.layeredarchitecture.model.CustomerDTO;
 import com.example.layeredarchitecture.model.ItemDTO;
@@ -53,8 +50,8 @@ public class PlaceOrderFormController {
     public Label lblTotal;
     private String orderId;
     ItemsDAO itemsDAO = new ItemsDAOImpl();
-
     CustomerDAO customerDAO = new CustomerDAOImpl();
+    OrderDAO orderDAO = new OrderDAOImpl();
 
     public void initialize() throws SQLException, ClassNotFoundException {
 
@@ -198,18 +195,9 @@ public class PlaceOrderFormController {
     }
 
     public String generateNewOrderId() {
-        try {
-            Connection connection = DBConnection.getDbConnection().getConnection();
-            Statement stm = connection.createStatement();
-            ResultSet rst = stm.executeQuery("SELECT oid FROM `Orders` ORDER BY oid DESC LIMIT 1;");
 
-            return rst.next() ? String.format("OID-%03d", (Integer.parseInt(rst.getString("oid").replace("OID-", "")) + 1)) : "OID-001";
-        } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR, "Failed to generate a new order id").show();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return "OID-001";
+        return orderDAO.generateNewId();
+
     }
 
     private void loadAllCustomerIds() {
