@@ -1,11 +1,9 @@
 package com.example.layeredarchitecture.dao;
 
 import com.example.layeredarchitecture.db.DBConnection;
+import com.example.layeredarchitecture.model.OrderDTO;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class OrderDAOImpl implements OrderDAO {
     @Override
@@ -21,5 +19,23 @@ public class OrderDAOImpl implements OrderDAO {
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public boolean existOrder(String orderId) throws SQLException, ClassNotFoundException {
+        Connection connection = DBConnection.getDbConnection().getConnection();
+        PreparedStatement stm = connection.prepareStatement("SELECT oid FROM `Orders` WHERE oid=?");
+        stm.setString(1, orderId);
+        return stm.executeQuery().next();
+    }
+
+    @Override
+    public boolean saveOrder(OrderDTO orderDTO) throws SQLException, ClassNotFoundException {
+        Connection connection = DBConnection.getDbConnection().getConnection();
+        PreparedStatement stm = connection.prepareStatement("INSERT INTO `Orders` (oid, date, customerID) VALUES (?,?,?)");
+        stm.setString(1, orderDTO.getOrderId());
+        stm.setDate(2, Date.valueOf(orderDTO.getOrderDate()));
+        stm.setString(3, orderDTO.getCustomerId());
+        return stm.executeUpdate()>0;
     }
 }
