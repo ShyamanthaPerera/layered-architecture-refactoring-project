@@ -144,6 +144,7 @@ public class ManageItemsFormController {
             }
 
             ItemsDAO itemsDAO = new ItemsDAOImpl();
+            itemsDAO.itemDeleteOnAction(code);
 
             tblItems.getItems().remove(tblItems.getSelectionModel().getSelectedItem());
             tblItems.getSelectionModel().clearSelection();
@@ -184,7 +185,7 @@ public class ManageItemsFormController {
                 }
                 //Save Item
 
-                ItemDTO itemDTO = new ItemDTO();
+                ItemDTO itemDTO = new ItemDTO(code,description,unitPrice,qtyOnHand);
 
                 boolean isSaved = itemsDAO.itemSaveOnAction(itemDTO);
 
@@ -204,7 +205,7 @@ public class ManageItemsFormController {
                 }
                 /*Update Item*/
 
-                ItemDTO itemDTO = new ItemDTO();
+                ItemDTO itemDTO = new ItemDTO(code,description,unitPrice,qtyOnHand);
 
                 itemsDAO.itemUpdateOnAction(itemDTO);
 
