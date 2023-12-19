@@ -77,10 +77,10 @@ public class CustomerDAOImpl implements CustomerDAO {
     }
 
     @Override
-    public CustomerDTO search(String newValue) throws SQLException, ClassNotFoundException {
+    public CustomerDTO search(String id) throws SQLException, ClassNotFoundException {
 
-        ResultSet resultSet = SQLUtil.execute("SELECT * FROM Customer WHERE id=?");
+        ResultSet resultSet = SQLUtil.execute("SELECT * FROM Customer WHERE id=?",id);
         resultSet.next();
-        return new CustomerDTO(newValue + "", resultSet.getString("name"), resultSet.getString("address"));
+        return new CustomerDTO(id + "", resultSet.getString("name"), resultSet.getString("address"));
     }
 }

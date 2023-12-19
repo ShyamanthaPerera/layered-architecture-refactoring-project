@@ -115,7 +115,7 @@ public class PlaceOrderFormController {
                             new Alert(Alert.AlertType.ERROR, "There is no such customer associated with the id " + newValue + "").show();
                         }
 
-                        CustomerDTO customerDTO = customerDAO.search(newValue + "");
+                        CustomerDTO customerDTO = customerDAO.search(newValue);
                         txtCustomerName.setText(customerDTO.getName());
                     } catch (SQLException e) {
                         new Alert(Alert.AlertType.ERROR, "Failed to find the customer " + newValue + "" + e).show();
@@ -192,7 +192,7 @@ public class PlaceOrderFormController {
         return customerDAO.exist(id);
     }
 
-    public String generateNewOrderId() {
+    public String generateNewOrderId() throws SQLException, ClassNotFoundException {
         return orderDAO.generateNewId();
     }
 
@@ -289,7 +289,7 @@ public class PlaceOrderFormController {
     public void txtQty_OnAction(ActionEvent actionEvent) {
     }
 
-    public void btnPlaceOrder_OnAction(ActionEvent actionEvent) {
+    public void btnPlaceOrder_OnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
         boolean b = saveOrder(orderId, LocalDate.now(), cmbCustomerId.getValue(),
                 tblOrderDetails.getItems().stream().map(tm -> new OrderDetailDTO(orderId,tm.getCode(), tm.getQty(), tm.getUnitPrice())).collect(Collectors.toList()));
 
@@ -313,7 +313,7 @@ public class PlaceOrderFormController {
         Connection connection = null;
         try {
             connection = DBConnection.getDbConnection().getConnection();
-            boolean b1 = orderDAO.exisT(orderId);
+            boolean b1 = orderDAO.exist(orderId);
             /*if order id already exist*/
             if (b1) {
                 return false;
@@ -321,7 +321,7 @@ public class PlaceOrderFormController {
 
             connection.setAutoCommit(false);
 
-            boolean b2 = orderDAO.saveOrder(new OrderDTO(orderId,
+            boolean b2 = orderDAO.save(new OrderDTO(orderId,
                     orderDate,
                     customerId));
 
