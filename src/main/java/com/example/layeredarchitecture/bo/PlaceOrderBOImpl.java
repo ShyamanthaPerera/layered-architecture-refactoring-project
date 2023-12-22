@@ -9,6 +9,7 @@ import com.example.layeredarchitecture.dao.custom.impl.ItemsDAOImpl;
 import com.example.layeredarchitecture.dao.custom.impl.OrderDAOImpl;
 import com.example.layeredarchitecture.dao.custom.impl.OrderDetailsDAOImpl;
 import com.example.layeredarchitecture.db.DBConnection;
+import com.example.layeredarchitecture.model.CustomerDTO;
 import com.example.layeredarchitecture.model.ItemDTO;
 import com.example.layeredarchitecture.model.OrderDTO;
 import com.example.layeredarchitecture.model.OrderDetailDTO;
@@ -16,6 +17,7 @@ import com.example.layeredarchitecture.model.OrderDetailDTO;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PlaceOrderBOImpl implements PlaceOrderBO {
@@ -89,5 +91,40 @@ public class PlaceOrderBOImpl implements PlaceOrderBO {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public CustomerDTO searchCustomer(String id) throws SQLException, ClassNotFoundException {
+        return customerDAO.search(id);
+    }
+
+    @Override
+    public boolean existItem(String code) throws SQLException, ClassNotFoundException {
+        return itemsDAO.exist(code);
+    }
+
+    @Override
+    public boolean existCustomer(String id) throws SQLException, ClassNotFoundException {
+        return customerDAO.exist(id);
+    }
+
+    @Override
+    public ItemDTO searchItem(String code) throws SQLException, ClassNotFoundException {
+        return itemsDAO.search(code);
+    }
+
+    @Override
+    public String generateNewOrderId() throws SQLException, ClassNotFoundException {
+        return orderDAO.generateNewId();
+    }
+
+    @Override
+    public ArrayList<CustomerDTO> getAllCustomersId() throws SQLException, ClassNotFoundException {
+        return customerDAO.getAll();
+    }
+
+    @Override
+    public ArrayList<ItemDTO> getAllItemsCode() throws SQLException, ClassNotFoundException {
+        return itemsDAO.getAll();
     }
 }

@@ -60,10 +60,6 @@ public class PlaceOrderFormController {
     public Label lblDate;
     public Label lblTotal;
     private String orderId;
-    ItemsDAO itemsDAO = new ItemsDAOImpl();
-    CustomerDAO customerDAO = new CustomerDAOImpl();
-    OrderDAO orderDAO = new OrderDAOImpl();
-    OrderDetailsDAO orderDetailsDAO = new OrderDetailsDAOImpl();
     PlaceOrderBO placeOrderBO = new PlaceOrderBOImpl();
 
     public void initialize() throws SQLException, ClassNotFoundException {
@@ -117,7 +113,7 @@ public class PlaceOrderFormController {
                             new Alert(Alert.AlertType.ERROR, "There is no such customer associated with the id " + newValue + "").show();
                         }
 
-                        CustomerDTO customerDTO = customerDAO.search(newValue);
+                        CustomerDTO customerDTO = placeOrderBO.searchCustomer(newValue + "");
                         txtCustomerName.setText(customerDTO.getName());
                     } catch (SQLException e) {
                         new Alert(Alert.AlertType.ERROR, "Failed to find the customer " + newValue + "" + e).show();
@@ -143,7 +139,7 @@ public class PlaceOrderFormController {
 //                        throw new NotFoundException("There is no such item associated with the id " + code);
                     }
 
-                    ItemDTO itemDTO = new ItemsDAOImpl().search(newItemCode);
+                    ItemDTO itemDTO =  placeOrderBO.searchItem(newItemCode + "");
                     txtDescription.setText(itemDTO.getDescription());
                     txtUnitPrice.setText(itemDTO.getUnitPrice().setScale(2).toString());
 
@@ -187,20 +183,20 @@ public class PlaceOrderFormController {
     }
 
     private boolean existItem(String code) throws SQLException, ClassNotFoundException {
-        return itemsDAO.exist(code);
+        return placeOrderBO.existItem(code);
     }
 
     boolean existCustomer(String id) throws SQLException, ClassNotFoundException {
-        return customerDAO.exist(id);
+        return placeOrderBO.existCustomer(id);
     }
 
     public String generateNewOrderId() throws SQLException, ClassNotFoundException {
-        return orderDAO.generateNewId();
+        return placeOrderBO.generateNewOrderId();
     }
 
     private void loadAllCustomerIds() {
         try {
-            ArrayList<CustomerDTO> getAllCustomers = customerDAO.getAll();
+            ArrayList<CustomerDTO> getAllCustomers = placeOrderBO.getAllCustomersId();
             for (CustomerDTO customerDTO: getAllCustomers) {
                 cmbCustomerId.getItems().add(customerDTO.getId());
             }
@@ -214,7 +210,7 @@ public class PlaceOrderFormController {
     private void loadAllItemCodes() {
         try {
             /*Get all items*/
-            ArrayList<ItemDTO> getAllItems = itemsDAO.getAll();
+            ArrayList<ItemDTO> getAllItems = placeOrderBO.getAllItemsCode();
             for (ItemDTO itemDTO: getAllItems) {
                 cmbItemCode.getItems().add(itemDTO.getCode());
             }
