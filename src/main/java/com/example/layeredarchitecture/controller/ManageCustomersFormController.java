@@ -2,8 +2,6 @@ package com.example.layeredarchitecture.controller;
 
 import com.example.layeredarchitecture.bo.CustomerBO;
 import com.example.layeredarchitecture.bo.CustomerBOImpl;
-import com.example.layeredarchitecture.dao.custom.CustomerDAO;
-import com.example.layeredarchitecture.dao.custom.impl.CustomerDAOImpl;
 import com.example.layeredarchitecture.model.CustomerDTO;
 import com.example.layeredarchitecture.view.tdm.CustomerTM;
 import com.jfoenix.controls.JFXButton;
@@ -37,8 +35,6 @@ public class ManageCustomersFormController {
     public TextField txtCustomerAddress;
     public TableView<CustomerTM> tblCustomers;
     public JFXButton btnAddNewCustomer;
-    /*CustomerDAO customerDAO = new CustomerDAOImpl();*/
-
     CustomerBO customerBO = new CustomerBOImpl();
 
     public void initialize() {
