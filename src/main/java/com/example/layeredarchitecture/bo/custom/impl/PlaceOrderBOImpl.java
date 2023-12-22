@@ -1,5 +1,7 @@
-package com.example.layeredarchitecture.bo;
+package com.example.layeredarchitecture.bo.custom.impl;
 
+import com.example.layeredarchitecture.bo.custom.PlaceOrderBO;
+import com.example.layeredarchitecture.dao.DAOFactory;
 import com.example.layeredarchitecture.dao.custom.CustomerDAO;
 import com.example.layeredarchitecture.dao.custom.ItemsDAO;
 import com.example.layeredarchitecture.dao.custom.OrderDAO;
@@ -22,10 +24,10 @@ import java.util.List;
 
 public class PlaceOrderBOImpl implements PlaceOrderBO {
 
-    ItemsDAO itemsDAO = new ItemsDAOImpl();
-    CustomerDAO customerDAO = new CustomerDAOImpl();
-    OrderDAO orderDAO = new OrderDAOImpl();
-    OrderDetailsDAO orderDetailsDAO = new OrderDetailsDAOImpl();
+    ItemsDAO itemsDAO = (ItemsDAO) DAOFactory.getDaoFactory().getDAOObject(DAOFactory.DAOTypes.ITEM);
+    CustomerDAO customerDAO = (CustomerDAO) DAOFactory.getDaoFactory().getDAOObject(DAOFactory.DAOTypes.CUSTOMER);
+    OrderDAO orderDAO = (OrderDAO) DAOFactory.getDaoFactory().getDAOObject(DAOFactory.DAOTypes.ORDER);
+    OrderDetailsDAO orderDetailsDAO = (OrderDetailsDAO) DAOFactory.getDaoFactory().getDAOObject(DAOFactory.DAOTypes.ORDER_DETAIL);
 
     @Override
     public boolean placeOrder(String orderId, LocalDate orderDate, String customerId, List<OrderDetailDTO> orderDetails) throws SQLException, ClassNotFoundException {
